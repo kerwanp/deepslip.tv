@@ -13,8 +13,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Deep Dip TV - Multiplex",
-  description: "Follow your favorite streamers climbing the Deep Dip 2 tower.",
+  title: "Deep Slip TV - Multiplex",
+  description: "Follow your favorite streamers climbing the Deep Slip tower.",
 };
 
 export default async function RootLayout({

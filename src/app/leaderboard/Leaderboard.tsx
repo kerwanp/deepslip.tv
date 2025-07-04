@@ -1,7 +1,5 @@
 "use client";
 
-import config from "@/config";
-import { StreamerData } from "@/lib/api";
 import { UserLeaderboard } from "@/lib/deepdip";
 import { cn, toOrdinal } from "@/lib/utils";
 import { useStreamers } from "@/providers/streamers.provider";

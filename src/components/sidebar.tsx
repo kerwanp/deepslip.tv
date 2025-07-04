@@ -35,13 +35,9 @@ export const Sidebar = () => {
   return (
     <div className="px-4 py-6 flex flex-col gap-4 w-[300px] max-h-screen">
       <div className="flex justify-center">
-        <Image
-          src="/logo.png"
-          className="invert mb-2"
-          width="150"
-          height="50"
-          alt="Deep Dip 2"
-        />
+        <h1 className="text-6xl font-black tracking-tighter leading-[0.8em] text-center scale-x-120 text-primary">
+          DEEP SLIP
+        </h1>
       </div>
       <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
         <div className="overflow-y-auto">
@@ -96,34 +92,12 @@ export const Sidebar = () => {
         >
           Leaderboard
         </SidebarItem>
-        <Dialog>
-          <DialogTrigger asChild>
-            <button className="group flex font-semibold items-center justify-center bg-white/10 gap-2 px-3 py-2 rounded-md transition-all duration-75 hover:bg-primary hover:text-black aria-selected:bg-primary aria-selected:text-black">
-              Donate
-            </button>
-          </DialogTrigger>
-          <DialogContent>
-            <h3 className="text-xl font-bold text-center mb-6">Donate</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <Button asChild>
-                <a
-                  href="https://matcherino.com/tournaments/111501"
-                  target="_blank"
-                >
-                  Donate to Prizepool
-                </a>
-              </Button>
-              <Button asChild>
-                <a
-                  href="https://www.gofundme.com/f/deep-dip-ii-mappers"
-                  target="_blank"
-                >
-                  Donate to Organizers
-                </a>
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <a
+          href="https://matcherino.com/tournaments/149201"
+          className="group flex font-semibold items-center justify-center bg-white/10 gap-2 px-3 py-2 rounded-md transition-all duration-75 hover:bg-primary hover:text-black aria-selected:bg-primary aria-selected:text-black"
+        >
+          Donate
+        </a>
       </div>
       <a
         href="https://twitter.com/PaucotMartin"

@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const streamerPages: MetadataRoute.Sitemap = config.streamers.map((s) => ({
-    url: `https://deepdip.tv/${s.twitch}`,
+    url: `https://deepslip.tv/${s.twitch}`,
     lastModified: new Date(),
     priority: 0.8,
     changeFrequency: "always",
@@ -11,19 +11,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: "https://deepdip.tv",
+      url: "https://deepslip.tv",
       lastModified: new Date(),
       changeFrequency: "always",
       priority: 1,
     },
     {
-      url: "https://deepdip.tv/leaderboard",
+      url: "https://deepslip.tv/leaderboard",
       lastModified: new Date(),
       changeFrequency: "always",
       priority: 0.9,
     },
     {
-      url: "https://deepdip.tv/top",
+      url: "https://deepslip.tv/top",
       lastModified: new Date(),
       changeFrequency: "always",
       priority: 0.6,

@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
 
-Sitemap: https://deepdip.tv/sitemap.xml
+Sitemap: https://deepslip.tv/sitemap.xml
