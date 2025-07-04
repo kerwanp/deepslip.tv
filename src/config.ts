@@ -211,14 +211,12 @@ const config: Config = {
       twitch: "sbville",
       language: "en",
       trackmania: "none",
-      casting: true,
     },
     {
       displayName: "Vaelyn",
       twitch: "vaelyn",
       language: "en",
-      trackmania: "none",
-      casting: true,
+      trackmania: "f4f42e27-83c7-48bf-833f-f9d27904d127",
     },
     {
       displayName: "Tekky",
