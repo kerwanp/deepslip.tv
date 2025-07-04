@@ -92,12 +92,34 @@ export const Sidebar = () => {
         >
           Leaderboard
         </SidebarItem>
-        <a
-          href="https://matcherino.com/tournaments/149201"
-          className="group flex font-semibold items-center justify-center bg-white/10 gap-2 px-3 py-2 rounded-md transition-all duration-75 hover:bg-primary hover:text-black aria-selected:bg-primary aria-selected:text-black"
-        >
-          Donate
-        </a>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="group flex font-semibold items-center justify-center bg-white/10 gap-2 px-3 py-2 rounded-md transition-all duration-75 hover:bg-primary hover:text-black aria-selected:bg-primary aria-selected:text-black">
+              Donate
+            </button>
+          </DialogTrigger>
+          <DialogContent>
+            <h3 className="text-xl font-bold text-center mb-6">Donate</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <Button asChild>
+                <a
+                  href="https://matcherino.com/tournaments/149201"
+                  target="_blank"
+                >
+                  Donate to Prizepool
+                </a>
+              </Button>
+              <Button asChild>
+                <a
+                  href="https://www.gofundme.com/f/support-the-deepslip-creators"
+                  target="_blank"
+                >
+                  Donate to Organizers
+                </a>
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
       <a
         href="https://twitter.com/PaucotMartin"
