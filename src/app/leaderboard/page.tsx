@@ -3,7 +3,7 @@ import { LeaderboardPage } from "./Leaderboard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Deep Dip TV - Leaderboard",
+  title: "Deep Slip TV - Leaderboard",
 };
 
 export default async function Page() {
