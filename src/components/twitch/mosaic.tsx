@@ -3,14 +3,13 @@
 import { LiveStream } from "./live-stream";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { StreamerData } from "@/lib/api";
+import { StreamerData } from "@/providers/streamers.provider";
 
 type MosaicProps = {
-  streamers: StreamerData[]
-}
+  streamers: StreamerData[];
+};
 
 export const Mosaic = ({ streamers }: MosaicProps) => {
-
   const className = useMemo(() => {
     if (streamers.length <= 1) {
       return "grid-cols-1 grid-rows-1";

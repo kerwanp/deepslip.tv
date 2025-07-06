@@ -1,36 +1,36 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useStreamers } from "@/providers/streamers.provider";
+import { usePlayers } from "@/providers/streamers.provider";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ComponentProps } from "react";
+import { ComponentProps, useMemo } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { MicVocal } from "lucide-react";
 
 export const Sidebar = () => {
-  let { streamers } = useStreamers();
+  const { streamers } = usePlayers();
   const pathname = usePathname();
 
-  streamers = streamers;
-  streamers
-    .sort((a, b) =>
-      a.streamer.displayName.localeCompare(b.streamer.displayName),
-    )
-    .sort((a, b) => {
-      return b.currentHeight - a.currentHeight;
-    })
-    .sort((a, b) =>
-      a.streamer.casting === b.streamer.casting
-        ? 0
-        : a.streamer.casting
-          ? -1
-          : 1,
-    )
-    .sort((a, b) => (a.online === b.online ? 0 : a.online ? -1 : 1));
+  const sorted = useMemo(() => {
+    return streamers
+      .sort((a, b) =>
+        a.streamer.displayName.localeCompare(b.streamer.displayName),
+      )
+      .sort((a, b) => {
+        return b.currentHeight - a.currentHeight;
+      })
+      .sort((a, b) =>
+        a.streamer.casting === b.streamer.casting
+          ? 0
+          : a.streamer.casting
+            ? -1
+            : 1,
+      )
+      .sort((a, b) => (a.isLive === b.isLive ? 0 : a.isLive ? -1 : 1));
+  }, [streamers]);
 
   return (
     <div className="px-4 py-6 flex flex-col gap-4 w-[300px] max-h-screen">
@@ -41,7 +41,7 @@ export const Sidebar = () => {
       </div>
       <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
         <div className="overflow-y-auto">
-          {streamers.map((s) => (
+          {sorted.map((s) => (
             <SidebarItem
               key={s.streamer.twitch}
               href={`/${s.streamer.twitch}`}
@@ -53,8 +53,8 @@ export const Sidebar = () => {
                     "inline-block w-4 h-4 rounded-full bg-primary",
                     {
                       "bg-primary group-hover:bg-white group-aria-selected:bg-white":
-                        s.online,
-                      "bg-destructive": !s.online,
+                        s.isLive,
+                      "bg-destructive": !s.isLive,
                     },
                   )}
                 />
@@ -65,7 +65,7 @@ export const Sidebar = () => {
               </div>
               {s.currentHeight > 0 && (
                 <div className="font-normal text-muted-foreground group-hover:text-black group-aria-selected:text-black">
-                  {s.currentHeight}M
+                  {s.currentHeight.toFixed()}M
                 </div>
               )}
             </SidebarItem>

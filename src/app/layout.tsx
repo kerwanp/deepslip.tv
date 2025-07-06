@@ -5,7 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components/sidebar";
 import { StreamersProvider } from "@/providers/streamers.provider";
-import { fetchStreamersData } from "@/lib/api";
+import { fetchPlayersData } from "@/lib/api";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,7 +22,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const streamers = await fetchStreamersData();
+  const streamers = await fetchPlayersData();
 
   return (
     <html lang="en">
@@ -32,7 +32,7 @@ export default async function RootLayout({
           fontSans.variable,
         )}
       >
-        <StreamersProvider streamers={streamers}>
+        <StreamersProvider players={streamers}>
           <div className="min-h-screen flex">
             <Sidebar />
             {children}

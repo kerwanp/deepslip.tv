@@ -2,17 +2,17 @@
 
 import { UserLeaderboard } from "@/lib/deepdip";
 import { cn, toOrdinal } from "@/lib/utils";
-import { useStreamers } from "@/providers/streamers.provider";
+import { usePlayers } from "@/providers/streamers.provider";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 
 export type PageProps = {
   leaderboard: UserLeaderboard[];
 };
 
 export const LeaderboardPage = (props: PageProps) => {
-  const { streamers } = useStreamers();
+  const { players } = usePlayers();
   const [leaderboard, setLeaderboard] = useState(props.leaderboard);
 
   useEffect(() => {
@@ -26,19 +26,19 @@ export const LeaderboardPage = (props: PageProps) => {
   return (
     <div className="flex-1 grid grid-cols-2 place-items-center items-center justify-center">
       <Leaderboard title="Live Leaderboard">
-        {streamers
+        {players
           .filter((s) => s.currentHeight > 0)
           .sort((a, b) => {
             return b.currentHeight - a.currentHeight;
           })
           .map((streamer, i) => (
             <LeaderboardItem
-              key={streamer.streamer.twitch}
+              key={streamer.id}
               height={streamer.currentHeight}
               rank={i + 1}
-              trackmania={streamer.streamer.trackmania}
+              trackmania={streamer.id}
             >
-              {streamer.streamer.displayName}
+              {streamer.name}
             </LeaderboardItem>
           ))}
       </Leaderboard>
@@ -82,7 +82,9 @@ type LeaderboardItemProps = {
   height: number;
   rank: number;
   trackmania: string;
+  twitch?: string;
   children: ReactNode;
+  isLive?: boolean;
 };
 
 const LeaderboardItem = ({
@@ -90,15 +92,19 @@ const LeaderboardItem = ({
   height,
   rank,
   trackmania,
+  twitch,
+  isLive,
 }: LeaderboardItemProps) => {
-  const { streamers } = useStreamers();
+  const { target, href } = useMemo(() => {
+    if (twitch) {
+      return { target: `/${twitch}`, href: "_self" };
+    }
 
-  const streamer = streamers.find((s) => s.streamer.trackmania === trackmania);
-
-  const href = streamer
-    ? `/${streamer.streamer.twitch}`
-    : `https://trackmania.io/#/player/${trackmania}`;
-  const target = streamer ? `_self` : "_blank";
+    return {
+      target: `https://trackmania.io/#/player/${trackmania}`,
+      href: "_blank",
+    };
+  }, [twitch, trackmania]);
 
   return (
     <MotionLink
@@ -120,8 +126,8 @@ const LeaderboardItem = ({
       <span
         className={cn("inline-block w-4 h-4 rounded-full bg-muted", {
           "bg-primary group-hover:bg-white group-aria-selected:bg-white":
-            streamer?.online,
-          "bg-destructive": streamer?.online === false,
+            isLive,
+          "bg-destructive": isLive === false,
         })}
       />
     </MotionLink>

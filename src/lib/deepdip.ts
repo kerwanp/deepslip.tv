@@ -28,7 +28,7 @@ export type LiveHeight = {
 };
 
 export function fetchLiveHeights(): Promise<LiveHeight[]> {
-  return fetch(`https://dips-plus-plus.xk.io/live_heights/global`, {
+  return fetch(`https://dips-plus-plus.xk.io/map/${mapUid}/live_heights`, {
     next: { revalidate: 15 },
     headers: {
       "User-Agent": "deepdip.tv;kerwan.",

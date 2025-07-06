@@ -1,8 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useMemo, useState } from "react";
-import { useStreamers } from "./streamers.provider";
-import { StreamerData } from "@/lib/api";
+import { StreamerData, usePlayers } from "./streamers.provider";
 
 type SettingsState = {
   languages: string[];
@@ -19,7 +18,7 @@ type SettingsProviderProps = {
 };
 
 export const SettingsProvider = ({ children }: SettingsProviderProps) => {
-  const { streamers } = useStreamers();
+  const { streamers } = usePlayers();
 
   const [languages, setLanguages] = useState<string[]>([]);
   const [shown, setShown] = useState<string[]>(
@@ -27,7 +26,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   );
 
   const shownStreamers = useMemo(() => {
-    let shownStreamers = streamers.filter((s) => s.online);
+    let shownStreamers = streamers.filter((s) => s.isLive);
 
     if (languages.length) {
       shownStreamers = shownStreamers.filter((s) =>

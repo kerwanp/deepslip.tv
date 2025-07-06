@@ -2,17 +2,18 @@
 
 import { TwitchChat } from "@/components/twitch/twitch-chat";
 import { TwitchPlayer } from "@/components/twitch/twitch-player";
-import { useStreamers } from "@/providers/streamers.provider";
+import { usePlayers } from "@/providers/streamers.provider";
 import Image from "next/image";
+import { useMemo } from "react";
 
 export function TopClimber() {
-  let { streamers } = useStreamers();
+  const { streamers } = usePlayers();
 
-  streamers = streamers
-    .filter((s) => s.online)
-    .sort((a, b) => b.currentHeight - a.currentHeight);
-
-  const streamer = streamers[0];
+  const top = useMemo(() => {
+    return streamers
+      .filter((s) => s.isLive)
+      .sort((a, b) => b.currentHeight - a.currentHeight)[0];
+  }, [streamers]);
 
   return (
     <div className="flex flex-1 relative">
@@ -27,10 +28,10 @@ export function TopClimber() {
         <TwitchPlayer
           height="100%"
           width="100%"
-          channel={streamer.streamer.twitch}
+          channel={top.streamer.twitch}
         />
       </div>
-      <TwitchChat channel={streamer.streamer.twitch} height="100%" />
+      <TwitchChat channel={top.streamer.twitch} height="100%" />
     </div>
   );
 }
