@@ -3,10 +3,9 @@
 import { LiveStream } from "./live-stream";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { StreamerData } from "@/providers/streamers.provider";
 
 type MosaicProps = {
-  streamers: StreamerData[];
+  streamers: string[];
 };
 
 export const Mosaic = ({ streamers }: MosaicProps) => {
@@ -37,10 +36,7 @@ export const Mosaic = ({ streamers }: MosaicProps) => {
   return (
     <div className={cn("grid h-screen", className)}>
       {streamers.map((streamer) => (
-        <LiveStream
-          key={streamer.streamer.twitch}
-          channel={streamer.streamer.twitch}
-        />
+        <LiveStream key={streamer} channel={streamer} />
       ))}
     </div>
   );

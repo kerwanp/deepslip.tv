@@ -8,29 +8,23 @@ import { usePathname } from "next/navigation";
 import { ComponentProps, useMemo } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { MicVocal } from "lucide-react";
+import { PlayerData } from "@/lib/api";
 
 export const Sidebar = () => {
-  const { streamers } = usePlayers();
+  const { players } = usePlayers();
   const pathname = usePathname();
 
   const sorted = useMemo(() => {
+    const streamers = players.filter((f) =>
+      Boolean(f.twitchName),
+    ) as (PlayerData & { twitchName: string })[];
     return streamers
-      .sort((a, b) =>
-        a.streamer.displayName.localeCompare(b.streamer.displayName),
-      )
+      .sort((a, b) => a.twitchName.localeCompare(b.twitchName))
       .sort((a, b) => {
         return b.currentHeight - a.currentHeight;
       })
-      .sort((a, b) =>
-        a.streamer.casting === b.streamer.casting
-          ? 0
-          : a.streamer.casting
-            ? -1
-            : 1,
-      )
       .sort((a, b) => (a.isLive === b.isLive ? 0 : a.isLive ? -1 : 1));
-  }, [streamers]);
+  }, [players]);
 
   return (
     <div className="px-4 py-6 flex flex-col gap-4 w-[300px] max-h-screen">
@@ -40,12 +34,12 @@ export const Sidebar = () => {
         </h1>
       </div>
       <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto flex-1">
           {sorted.map((s) => (
             <SidebarItem
-              key={s.streamer.twitch}
-              href={`/${s.streamer.twitch}`}
-              aria-selected={pathname === `/${s.streamer.twitch}`}
+              key={s.twitchName}
+              href={`/${s.twitchName}`}
+              aria-selected={pathname === `/${s.twitchName}`}
             >
               <div className="flex-1 flex gap-2 items-center">
                 <span
@@ -58,10 +52,7 @@ export const Sidebar = () => {
                     },
                   )}
                 />
-                {s.streamer.displayName}
-                {s.streamer.casting && (
-                  <MicVocal className="w-4 h-4 text-white/60 group-hover:text-black group-aria-selected:text-black" />
-                )}
+                {s.displayName}
               </div>
               {s.currentHeight > 0 && (
                 <div className="font-normal text-muted-foreground group-hover:text-black group-aria-selected:text-black">

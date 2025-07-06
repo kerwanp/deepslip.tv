@@ -22,13 +22,13 @@ export type StreamersProviderProps = {
   players: PlayerData[];
 };
 
-export type StreamerData = PlayerData & { streamer: {} };
+export type StreamerData = PlayerData & { twitchName: string };
 
 export const StreamersProvider = (props: StreamersProviderProps) => {
   const [players, setPlayers] = useState(props.players);
 
   const streamers = useMemo(() => {
-    return players.filter((p) => p.streamer) as StreamerData[];
+    return players.filter((p) => Boolean(p.twitchName)) as StreamerData[];
   }, [players]);
 
   useEffect(() => {

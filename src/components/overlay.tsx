@@ -2,7 +2,6 @@
 
 import config from "@/config";
 import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import {
   Sheet,
@@ -16,22 +15,16 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
 export const Overlay = () => {
-  const { languages, setLanguages, shown, setShown } = useSettings();
+  const { shown, setShown } = useSettings();
 
   const { register, watch } = useForm({
     defaultValues: {
-      languages,
       shown,
     },
     mode: "onChange",
   });
 
-  const languagesWatcher = watch("languages");
   const shownWatcher = watch("shown");
-
-  useEffect(() => {
-    setLanguages(languagesWatcher);
-  }, [languagesWatcher, setLanguages]);
 
   useEffect(() => {
     setShown(shownWatcher);
@@ -48,26 +41,6 @@ export const Overlay = () => {
             <SheetTitle>Settings</SheetTitle>
           </SheetHeader>
           <form className="py-8 flex flex-col gap-y-6">
-            <div>
-              <div className="font-lg font-bold mb-3">Languages</div>
-              <div className="flex flex-col gap-y-2">
-                {config.languages.map((language) => (
-                  <div
-                    key={language.id}
-                    className="flex items-center space-x-2"
-                  >
-                    <input
-                      id={language.id}
-                      className="cursor-pointer peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                      type="checkbox"
-                      {...register("languages")}
-                      value={language.id}
-                    />
-                    <Label htmlFor={language.id}>{language.label}</Label>
-                  </div>
-                ))}
-              </div>
-            </div>
             <div>
               <div className="font-lg font-bold mb-3">Streamers</div>
               <div className="flex flex-col gap-y-2">

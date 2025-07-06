@@ -35,3 +35,17 @@ export function fetchLiveHeights(): Promise<LiveHeight[]> {
     },
   }).then((r) => r.json());
 }
+
+export type TwitchInfo = {
+  display_name: string;
+  twitch_name: string;
+};
+
+export function fetchTwitchList(): Promise<TwitchInfo[]> {
+  return fetch(`https://dips-plus-plus.xk.io/twitch/list`, {
+    next: { revalidate: 240 },
+    headers: {
+      "User-Agent": "deepdip.tv;kerwan.",
+    },
+  }).then((r) => r.json());
+}

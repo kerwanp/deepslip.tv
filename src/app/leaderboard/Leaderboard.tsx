@@ -1,8 +1,12 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { PlayerData } from "@/lib/api";
 import { UserLeaderboard } from "@/lib/deepdip";
 import { cn, toOrdinal } from "@/lib/utils";
 import { usePlayers } from "@/providers/streamers.provider";
+import { CheckedState } from "@radix-ui/react-checkbox";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ReactNode, useEffect, useMemo, useState } from "react";
@@ -13,6 +17,16 @@ export type PageProps = {
 
 export const LeaderboardPage = (props: PageProps) => {
   const { players } = usePlayers();
+
+  return (
+    <div className="flex-1 grid grid-cols-2 place-items-center items-center justify-center">
+      <LiveLeaderboard players={players} />
+      <GlobalLeaderboard leaderboard={props.leaderboard} />
+    </div>
+  );
+};
+
+const GlobalLeaderboard = (props: { leaderboard: UserLeaderboard[] }) => {
   const [leaderboard, setLeaderboard] = useState(props.leaderboard);
 
   useEffect(() => {
@@ -24,40 +38,59 @@ export const LeaderboardPage = (props: PageProps) => {
   }, [setLeaderboard]);
 
   return (
-    <div className="flex-1 grid grid-cols-2 place-items-center items-center justify-center">
+    <Leaderboard title="Global Leaderboard">
+      {leaderboard
+        .sort((a, b) => {
+          return b.pos[1] - a.pos[1];
+        })
+        .map((streamer, i) => (
+          <LeaderboardItem
+            key={streamer.wsid}
+            height={streamer.pos[1]}
+            rank={i + 1}
+            trackmania={streamer.wsid}
+          >
+            {streamer.name}
+          </LeaderboardItem>
+        ))}
+    </Leaderboard>
+  );
+};
+
+const LiveLeaderboard = ({ players }: { players: PlayerData[] }) => {
+  const [onlyStreamers, setOnlyStreamers] = useState<CheckedState>(false);
+
+  const filtered = useMemo(() => {
+    if (!onlyStreamers) return players;
+    return players.filter((p) => p.twitchName);
+  }, [onlyStreamers, players]);
+
+  return (
+    <div>
       <Leaderboard title="Live Leaderboard">
-        {players
+        {filtered
           .filter((s) => s.currentHeight > 0)
           .sort((a, b) => {
             return b.currentHeight - a.currentHeight;
           })
-          .map((streamer, i) => (
+          .map((player, i) => (
             <LeaderboardItem
-              key={streamer.id}
-              height={streamer.currentHeight}
+              key={player.trackmaniaId}
+              height={player.currentHeight}
               rank={i + 1}
-              trackmania={streamer.id}
+              trackmania={player.trackmaniaId}
             >
-              {streamer.name}
+              {player.displayName}
             </LeaderboardItem>
           ))}
       </Leaderboard>
-      <Leaderboard title="Global Leaderboard">
-        {leaderboard
-          .sort((a, b) => {
-            return b.pos[1] - a.pos[1];
-          })
-          .map((streamer, i) => (
-            <LeaderboardItem
-              key={streamer.wsid}
-              height={streamer.pos[1]}
-              rank={i + 1}
-              trackmania={streamer.wsid}
-            >
-              {streamer.name}
-            </LeaderboardItem>
-          ))}
-      </Leaderboard>
+      <Label className="cursor-pointer flex items-center justify-center gap-3 mt-3">
+        <Checkbox
+          checked={onlyStreamers}
+          onCheckedChange={(v) => setOnlyStreamers(v)}
+        />
+        <div>Only show streamers</div>
+      </Label>
     </div>
   );
 };

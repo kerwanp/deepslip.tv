@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { usePlayers } from "@/providers/streamers.provider";
 import { Maximize } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 type PageProps = {
   params: { streamers: string[] };
@@ -15,13 +15,13 @@ type PageProps = {
 
 export default function Page({ params }: PageProps) {
   const [fullScreen, setFullscreen] = useState(false);
-  const { streamers } = usePlayers();
+  const { players } = usePlayers();
 
-  const shown = streamers.filter((s) =>
-    params.streamers.includes(s.streamer.twitch),
-  );
-
-  const defaultTab = shown[0].streamer.twitch;
+  const shown = useMemo(() => {
+    return players.filter(
+      (p) => p.twitchName && params.streamers.includes(p.twitchName),
+    );
+  }, []);
 
   return (
     <div className="flex-1 flex">
@@ -35,23 +35,23 @@ export default function Page({ params }: PageProps) {
             <Maximize />
           </Button>
         </div>
-        <Mosaic streamers={shown} />
+        <Mosaic streamers={shown.map((s) => s.twitchName!)} />
       </div>
-      <Tabs className="flex flex-col" defaultValue={defaultTab}>
+      <Tabs className="flex flex-col" defaultValue={shown[0].trackmaniaId}>
         <TabsList>
           {shown.map((s) => (
-            <TabsTrigger key={s.streamer.twitch} value={s.streamer.twitch}>
-              {s.streamer.displayName}
+            <TabsTrigger key={s.trackmaniaId} value={s.trackmaniaId}>
+              {s.displayName}
             </TabsTrigger>
           ))}
         </TabsList>
         {shown.map((s) => (
           <TabsContent
-            key={s.streamer.twitch}
+            key={s.trackmaniaId}
             className="flex-1 w-[350px]"
-            value={s.streamer.twitch}
+            value={s.trackmaniaId}
           >
-            <TwitchChat channel={s.streamer.twitch} height="100%" />
+            <TwitchChat channel={s.twitchName!} height="100%" />
           </TabsContent>
         ))}
       </Tabs>

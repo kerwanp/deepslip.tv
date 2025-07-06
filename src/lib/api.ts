@@ -1,32 +1,40 @@
-import config, { Streamer } from "@/config";
-import { fetchLiveHeights } from "./deepdip";
+import { fetchLiveHeights, fetchTwitchList } from "./deepdip";
 import { fetchStreamsData } from "./twitch";
 
 export type PlayerData = {
-  id: string;
-  name: string;
-  streamer?: Streamer;
-  isLive?: boolean;
+  trackmaniaId: string;
+  displayName: string;
+  twitchName?: string;
   currentHeight: number;
+  isLive?: boolean;
 };
 
 export async function fetchPlayersData(): Promise<PlayerData[]> {
-  const streamers = config.streamers;
+  const [streamers, heights] = await Promise.all([
+    await fetchTwitchList(),
+    await fetchLiveHeights(),
+  ]);
 
-  // const leaderboard = await fetchLeaderboard();
-  const streams = await fetchStreamsData(streamers.map((s) => s.twitch));
-  const heights = await fetchLiveHeights();
-
-  return heights.map((height) => {
-    const streamer = streamers.find((s) => s.trackmania === height.user_id);
+  const playerData: PlayerData[] = heights.map((height) => {
     return {
-      id: height.user_id,
-      name: height.display_name,
-      streamer: streamer,
-      isLive: streamer
-        ? Boolean(streams.find((s) => streamer.twitch === s.user_login))
-        : undefined,
+      trackmaniaId: height.user_id,
+      displayName: height.display_name,
+      twitchName: streamers.find((s) => s.display_name === height.display_name)
+        ?.twitch_name,
       currentHeight: height.height,
+    };
+  });
+
+  const streams = await fetchStreamsData(
+    playerData.map((f) => f.twitchName).filter(Boolean) as string[],
+  );
+
+  return playerData.map((player) => {
+    return {
+      ...player,
+      isLive: !!streams.find(
+        (s) => s.user_login === player.twitchName?.toLowerCase(),
+      ),
     };
   });
 }

@@ -7,13 +7,13 @@ import Image from "next/image";
 import { useMemo } from "react";
 
 export function TopClimber() {
-  const { streamers } = usePlayers();
+  const { players } = usePlayers();
 
   const top = useMemo(() => {
-    return streamers
+    return players
       .filter((s) => s.isLive)
       .sort((a, b) => b.currentHeight - a.currentHeight)[0];
-  }, [streamers]);
+  }, [players]);
 
   return (
     <div className="flex flex-1 relative">
@@ -25,13 +25,9 @@ export function TopClimber() {
         className="invert absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[-1]"
       />
       <div className="flex-1">
-        <TwitchPlayer
-          height="100%"
-          width="100%"
-          channel={top.streamer.twitch}
-        />
+        <TwitchPlayer height="100%" width="100%" channel={top.twitchName} />
       </div>
-      <TwitchChat channel={top.streamer.twitch} height="100%" />
+      <TwitchChat channel={top.twitchName!} height="100%" />
     </div>
   );
 }
