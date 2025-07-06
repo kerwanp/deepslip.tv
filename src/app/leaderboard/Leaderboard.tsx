@@ -45,12 +45,12 @@ export const LeaderboardPage = (props: PageProps) => {
       <Leaderboard title="Global Leaderboard">
         {leaderboard
           .sort((a, b) => {
-            return b.height - a.height;
+            return b.pos[1] - a.pos[1];
           })
           .map((streamer, i) => (
             <LeaderboardItem
               key={streamer.wsid}
-              height={streamer.height}
+              height={streamer.pos[1]}
               rank={i + 1}
               trackmania={streamer.wsid}
             >

@@ -197,27 +197,13 @@ const config: Config = {
       displayName: "Jnic",
       twitch: "jnic",
       language: "en",
-      trackmania: "none",
-      casting: true,
-    },
-    {
-      displayName: "SBVille",
-      twitch: "sbville",
-      language: "en",
-      trackmania: "none",
+      trackmania: "82783a8b-5e20-44c1-8ae9-b2ac123b3c40",
     },
     {
       displayName: "Vaelyn",
       twitch: "vaelyn",
       language: "en",
       trackmania: "f4f42e27-83c7-48bf-833f-f9d27904d127",
-    },
-    {
-      displayName: "Tekky",
-      twitch: "tekky",
-      language: "en",
-      trackmania: "none",
-      casting: true,
     },
   ],
 };

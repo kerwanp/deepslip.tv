@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const leaderboard = await fetchLeaderboard();
-  return <LeaderboardPage leaderboard={leaderboard} />
+  return <LeaderboardPage leaderboard={leaderboard} />;
 }

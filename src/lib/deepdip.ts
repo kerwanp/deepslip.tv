@@ -3,14 +3,17 @@ export type Leaderboard = UserLeaderboard[];
 export type UserLeaderboard = {
   rank: number;
   wsid: string;
-  height: number;
+  pos: [number, number, number];
   ts: number;
   name: string;
   update_count: number;
+  race_time: number;
 };
 
+const mapUid = "DeepSlip_1fwwLrYCb7Ku7Tqcl0";
+
 export function fetchLeaderboard(): Promise<Leaderboard> {
-  return fetch("https://dips-plus-plus.xk.io/leaderboard/global", {
+  return fetch(`https://dips-plus-plus.xk.io/map/${mapUid}/leaderboard`, {
     next: { revalidate: 60 },
     headers: {
       "User-Agent": "deepdip.tv;kerwan.",
