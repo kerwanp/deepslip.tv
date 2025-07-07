@@ -130,12 +130,12 @@ const LeaderboardItem = ({
 }: LeaderboardItemProps) => {
   const { target, href } = useMemo(() => {
     if (twitch) {
-      return { target: `/${twitch}`, href: "_self" };
+      return { href: `/${twitch}`, target: "_self" };
     }
 
     return {
-      target: `https://trackmania.io/#/player/${trackmania}`,
-      href: "_blank",
+      href: `https://trackmania.io/#/player/${trackmania}`,
+      target: "_blank",
     };
   }, [twitch, trackmania]);
 
