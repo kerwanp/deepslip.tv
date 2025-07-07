@@ -79,6 +79,8 @@ const LiveLeaderboard = ({ players }: { players: PlayerData[] }) => {
               height={player.currentHeight}
               rank={i + 1}
               trackmania={player.trackmaniaId}
+              twitch={player.twitchName}
+              isLive={player.isLive}
             >
               {player.displayName}
             </LeaderboardItem>
@@ -129,15 +131,15 @@ const LeaderboardItem = ({
   isLive,
 }: LeaderboardItemProps) => {
   const { target, href } = useMemo(() => {
-    if (twitch) {
-      return { target: `/${twitch}`, href: "_self" };
+    if (twitch && isLive) {
+      return { href: `/${twitch}`, target: "_self" };
     }
 
     return {
-      target: `https://trackmania.io/#/player/${trackmania}`,
-      href: "_blank",
+      href: `https://trackmania.io/#/player/${trackmania}`,
+      target: "_blank",
     };
-  }, [twitch, trackmania]);
+  }, [twitch, trackmania, isLive]);
 
   return (
     <MotionLink
@@ -159,8 +161,8 @@ const LeaderboardItem = ({
       <span
         className={cn("inline-block w-4 h-4 rounded-full bg-muted", {
           "bg-primary group-hover:bg-white group-aria-selected:bg-white":
-            isLive,
-          "bg-destructive": isLive === false,
+            twitch && isLive,
+          "bg-destructive": twitch && isLive === false,
         })}
       />
     </MotionLink>
