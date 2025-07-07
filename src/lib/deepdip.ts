@@ -41,11 +41,20 @@ export type TwitchInfo = {
   twitch_name: string;
 };
 
-export function fetchTwitchList(): Promise<TwitchInfo[]> {
-  return fetch(`https://dips-plus-plus.xk.io/twitch/list`, {
-    next: { revalidate: 240 },
-    headers: {
-      "User-Agent": "deepdip.tv;kerwan.",
+export async function fetchTwitchList(): Promise<TwitchInfo[]> {
+  const data: TwitchInfo[] = await fetch(
+    `https://dips-plus-plus.xk.io/twitch/list`,
+    {
+      next: { revalidate: 240 },
+      headers: {
+        "User-Agent": "deepdip.tv;kerwan.",
+      },
     },
-  }).then((r) => r.json());
+  ).then((r) => r.json());
+
+  return data
+    .reverse()
+    .filter(
+      (v, i) => data.findIndex((v2) => v2.twitch_name === v.twitch_name) == i,
+    );
 }
