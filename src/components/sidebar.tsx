@@ -27,7 +27,7 @@ export const Sidebar = () => {
   }, [players]);
 
   return (
-    <div className="px-4 py-6 flex flex-col gap-4 w-[300px] max-h-screen">
+    <div className="px-4 py-6 flex flex-col gap-4 w-full sm:w-[300px] max-h-screen">
       <div className="flex justify-center">
         <h1 className="text-6xl font-black tracking-tighter leading-[0.8em] text-center scale-x-120 text-primary">
           DEEP SLIP

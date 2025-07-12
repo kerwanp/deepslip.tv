@@ -33,7 +33,7 @@ export default async function RootLayout({
         )}
       >
         <StreamersProvider players={streamers}>
-          <div className="min-h-screen flex">
+          <div className="min-h-screen flex flex-wrap">
             <Sidebar />
             {children}
           </div>
