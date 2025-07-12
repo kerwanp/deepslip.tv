@@ -19,7 +19,7 @@ export const LeaderboardPage = (props: PageProps) => {
   const { players } = usePlayers();
 
   return (
-    <div className="flex-1 grid grid-cols-2 place-items-center items-center justify-center">
+    <div className="flex-1 mx-1 grid grid-cols-1 xl:grid-cols-2 gap-y-10 place-items-center items-center justify-center min-w-[400px]">
       <LiveLeaderboard players={players} />
       <GlobalLeaderboard leaderboard={props.leaderboard} />
     </div>
@@ -66,7 +66,7 @@ const LiveLeaderboard = ({ players }: { players: PlayerData[] }) => {
   }, [onlyStreamers, players]);
 
   return (
-    <div>
+    <div className="w-full sm:w-[400px]">
       <Leaderboard title="Live Leaderboard">
         {filtered
           .filter((s) => s.currentHeight > 0)
@@ -104,7 +104,7 @@ type LeaderboardProps = {
 
 const Leaderboard = ({ children, title }: LeaderboardProps) => {
   return (
-    <div className="flex flex-col justify-center w-[400px] max-h-[80vh] overflow-y-auto">
+    <div className="flex flex-col justify-center w-full sm:w-[400px] max-h-[80vh] overflow-y-auto">
       <h2 className="text-center mb-4 text-lg font-bold text-primary">
         {title}
       </h2>
